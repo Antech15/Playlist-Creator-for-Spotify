@@ -19,7 +19,8 @@ TOKEN_URL = 'https://accounts.spotify.com/api/token'
 # Homepage route
 @app.route('/')
 def home():
-    return '<a href="/login">Log in with Spotify</a>'
+    return render_template('index.html')
+    #return '<a href="/login">Log in with Spotify</a>'
 
 # Login route
 @app.route('/login')
