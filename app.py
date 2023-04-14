@@ -51,22 +51,31 @@ def callback():
     response = requests.post(TOKEN_URL, data=payload)
     access_token = response.json()['access_token']
     refresh_token = response.json()['refresh_token']
+    print(f"access_token: {access_token}")
+    print(f"refresh_token: {refresh_token}")
 
     # Create a new playlist for the user
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json'
     }
+    response = requests.get('https://api.spotify.com/v1/me', headers=headers)
+    user_id = response.json()['id']
+    print(f"user_id: {user_id}")
     data = {
         'name': 'My New Playlist',
         'description': 'A new playlist created with the Spotify API',
         'public': False
     }
-    response = requests.post('https://api.spotify.com/v1/users/{user_id}/playlists', headers=headers, json=data)
-    #playlist_id = response.json()['id']
+    url = f'https://api.spotify.com/v1/users/{user_id}/playlists'
+    response = requests.post(url, headers=headers, json=data)
+    if response.status_code != 201:
+        print('Could not create playlist')
+        return 'Could not create playlist'
+    playlist_id = response.json()['id']
 
-    return f'New playlist created with ID' 
-    #return f'New playlist created with ID {playlist_id}'
+    #return f'New playlist created with ID' 
+    return f'New playlist created with ID {playlist_id}'
 
 if __name__ == "__main__":
     app.run(debug=True)
