@@ -69,6 +69,7 @@ def callback():
     }
     url = f'https://api.spotify.com/v1/users/{user_id}/playlists'
     response = requests.post(url, headers=headers, json=data)
+    print(response.text)
     if response.status_code != 201:
         print('Could not create playlist')
         return 'Could not create playlist'
