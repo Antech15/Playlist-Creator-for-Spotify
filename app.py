@@ -26,7 +26,7 @@ def home():
 @app.route('/login')
 def login():
     # Redirect the user to the Spotify login page
-    scope = 'playlist-modify-public'
+    scope = 'user-library-read playlist-modify-public playlist-modify-private'
     params = {
         'client_id': CLIENT_ID,
         'response_type': 'code',
@@ -69,7 +69,7 @@ def callback():
     }
     url = f'https://api.spotify.com/v1/users/{user_id}/playlists'
     response = requests.post(url, headers=headers, json=data)
-    print(response.text)
+    print(response.status_code)
     if response.status_code != 201:
         print('Could not create playlist')
         return 'Could not create playlist'
